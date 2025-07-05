@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Rekam Medis{% endblock %}
+
+{% block content %}
+<h2>Daftar Tindakan Medis</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Tanggal</th>
+            <th>Pasien</th>
+            <th>Diagnosa</th>
+            <th>Dokter</th>
+            <th>Aksi</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for t in tindakan %}
+        <tr>
+            <td>{{ t['tanggal'] }}</td>
+            <td>{{ t['nama_pasien'] }}</td>
+            <td>{{ t['diagnosa'] }}</td>
+            <td>{{ t['dokter'] }}</td>
+            <td>
+                <a href="#" class="btn-sm">Detail</a>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="5">Tidak ada data tindakan</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
