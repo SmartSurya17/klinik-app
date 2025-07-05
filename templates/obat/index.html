@@ -1,1 +1,48 @@
-d
+{% extends 'base.html' %}
+
+{% block title %}Manajemen Obat{% endblock %}
+
+{% block content %}
+<h2>Manajemen Stok Obat</h2>
+
+<div class="toolbar">
+    <a href="{{ url_for('obat_tambah') }}" class="btn">Tambah Obat Baru</a>
+    <form class="search-form" method="GET">
+        <input type="text" name="search" placeholder="Cari obat..." value="{{ request.args.get('search', '') }}">
+        <button type="submit">Cari</button>
+    </form>
+    <div class="export-actions">
+        <a href="{{ url_for('export_obat', format='excel') }}" class="btn">Export Excel</a>
+        <a href="{{ url_for('export_obat', format='pdf') }}" class="btn">Export PDF</a>
+    </div>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Nama Obat</th>
+            <th>Stok</th>
+            <th>Satuan</th>
+            <th>Min. Stok</th>
+            <th>Aksi</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in obat %}
+        <tr class="{% if item['stok'] <= item['min_stok'] %}low-stock{% endif %}">
+            <td>{{ item['nama'] }}</td>
+            <td>{{ item['stok'] }}</td>
+            <td>{{ item['satuan'] }}</td>
+            <td>{{ item['min_stok'] }}</td>
+            <td>
+                <a href="{{ url_for('stok_masuk', id=item['id']) }}" class="btn-sm">Tambah Stok</a>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="5">Tidak ada data obat</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
