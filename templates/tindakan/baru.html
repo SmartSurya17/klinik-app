@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Tindakan Baru{% endblock %}
+
+{% block content %}
+<h2>Rekam Medis Baru</h2>
+
+<form method="POST">
+    <div class="form-group">
+        <label for="pasien_id">Pasien</label>
+        <select name="pasien_id" required>
+            <option value="">Pilih Pasien</option>
+            {% for p in pasien %}
+            <option value="{{ p['id'] }}">{{ p['nama'] }} ({{ p['telepon'] }})</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="diagnosa">Diagnosa</label>
+        <textarea name="diagnosa" rows="3" required></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="tindakan">Tindakan</label>
+        <textarea name="tindakan" rows="3"></textarea>
+    </div>
+
+    <h3>Resep Obat</h3>
+    <table class="resep-table">
+        <thead>
+            <tr>
+                <th>Nama Obat</th>
+                <th>Stok Tersedia</th>
+                <th>Jumlah</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in obat %}
+            <tr>
+                <td>{{ item['nama'] }} ({{ item['satuan'] }})</td>
+                <td>{{ item['stok'] }}</td>
+                <td>
+                    <input type="number" name="obat_{{ item['id'] }}" 
+                           min="0" max="{{ item['stok'] }}" 
+                           value="0" class="jumlah-obat">
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <button type="submit" class="btn">Simpan Rekam Medis</button>
+</form>
+{% endblock %}
