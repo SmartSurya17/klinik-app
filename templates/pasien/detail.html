@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Detail Pasien{% endblock %}
+
+{% block content %}
+<h2>Detail Pasien</h2>
+
+<div class="patient-detail">
+    <p><strong>Nama:</strong> {{ pasien['nama'] }}</p>
+    <p><strong>Alamat:</strong> {{ pasien['alamat'] }}</p>
+    <p><strong>Telepon:</strong> {{ pasien['telepon'] }}</p>
+    <p><strong>Tanggal Lahir:</strong> {{ pasien['tanggal_lahir'] }}</p>
+    <p><strong>Jenis Kelamin:</strong> {{ 'Laki-laki' if pasien['jenis_kelamin'] == 'L' else 'Perempuan' }}</p>
+    <p><strong>Tanggal Daftar:</strong> {{ pasien['tanggal_daftar'] }}</p>
+</div>
+
+<h3>Riwayat Tindakan</h3>
+{% if riwayat %}
+<table>
+    <thead>
+        <tr>
+            <th>Tanggal</th>
+            <th>Diagnosa</th>
+            <th>Tindakan</th>
+            <th>Dokter</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for r in riwayat %}
+        <tr>
+            <td>{{ r['tanggal'] }}</td>
+            <td>{{ r['diagnosa'] }}</td>
+            <td>{{ r['tindakan'] }}</td>
+            <td>{{ r['dokter'] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>Belum ada riwayat tindakan.</p>
+{% endif %}
+{% endblock %}
