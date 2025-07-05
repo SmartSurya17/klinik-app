@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}Manajemen Antrian{% endblock %}
+
+{% block content %}
+<h2>Antrian Berobat</h2>
+
+<div class="toolbar">
+    <form method="GET">
+        <label for="tanggal">Tanggal:</label>
+        <input type="date" name="tanggal" value="{{ tanggal }}">
+        <button type="submit">Filter</button>
+    </form>
+</div>
+
+<h3>Antrian Aktif</h3>
+{% if antrian %}
+<table>
+    <thead>
+        <tr>
+            <th>Nomor</th>
+            <th>Nama Pasien</th>
+            <th>Status</th>
+            <th>Aksi</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for a in antrian %}
+        <tr>
+            <td>{{ a['nomor'] }}</td>
+            <td>{{ a['nama_pasien'] }}</td>
+            <td>{{ a['status'] }}</td>
+            <td>
+                {% if a['status'] == 'MENUNGGU' %}
+                <a href="{{ url_for('antrian_panggil', id=a['id']) }}" class="btn-sm">Panggil</a>
+                {% elif a['status'] == 'DIPANGGIL' %}
+                <a href="{{ url_for('antrian_selesai', id=a['id']) }}" class="btn-sm">Selesai</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>Tidak ada antrian aktif.</p>
+{% endif %}
+
+<h3>Antrian Selesai</h3>
+{% if selesai %}
+<table>
+    <thead>
+        <tr>
+            <th>Nomor</th>
+            <th>Nama Pasien</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for s in selesai %}
+        <tr>
+            <td>{{ s['nomor'] }}</td>
+            <td>{{ s['nama_pasien'] }}</td>
+            <td>{{ s['status'] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>Tidak ada antrian selesai.</p>
+{% endif %}
+
+<h3>Tambah Pasien ke Antrian</h3>
+<form method="POST" class="add-queue">
+    <div class="form-group">
+        <label for="pasien_id">Pasien</label>
+        <select name="pasien_id" required>
+            <option value="">Pilih Pasien</option>
+            {% for p in pasien %}
+            <option value="{{ p['id'] }}">{{ p['nama'] }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit" class="btn">Tambah</button>
+</form>
+{% endblock %}
