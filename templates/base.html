@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Klinik - {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Sistem Manajemen Klinik</h1>
+        <nav>
+            {% if 'user_id' in session %}
+            <span>Halo, {{ session['username'] }} ({{ session['role'] }})</span>
+            <a href="{{ url_for('dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('obat_index') }}">Obat</a>
+            <a href="{{ url_for('pasien_index') }}">Pasien</a>
+            <a href="{{ url_for('antrian_index') }}">Antrian</a>
+            <a href="{{ url_for('tindakan_index') }}">Tindakan</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+            {% else %}
+            <a href="{{ url_for('login') }}">Login</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Klinik Sehat. Hak Cipta Dilindungi.</p>
+    </footer>
+</body>
+</html>
